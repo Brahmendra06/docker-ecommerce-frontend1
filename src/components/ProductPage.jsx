@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getProducts } from "../services/productService";
+import { getProducts, getProductImageUrl } from "../services/productService";
 import { addToCart } from "../services/cartService";
 import "./style.css";
 
@@ -29,15 +29,24 @@ const ProductPage = ({ category }) => {
 
   return (
     <div className="product-container">
-      <h2>{category ? category.charAt(0).toUpperCase() + category.slice(1) : "All Products"}</h2>
+      <h2>
+        {category
+          ? category.charAt(0).toUpperCase() + category.slice(1)
+          : "All Products"}
+      </h2>
       <div className="product-grid">
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product.id} className="product-card">
-              <img src={`http://localhost:8080/api/products/images/${product.imagePath}`} alt={product.name} />
+              <img
+                src={getProductImageUrl(product.image_path)}
+                alt={product.name}
+              />
               <h3>{product.name}</h3>
-              <p>Price: ${product.price}</p>
-              <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+              <p>Price: ₹{product.price.toFixed(2)}</p>
+              <button onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </button>
             </div>
           ))
         ) : (

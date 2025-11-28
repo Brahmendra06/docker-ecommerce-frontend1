@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
-import { getProducts } from "../services/productService";
+import { useCart } from "../../context/CartContext";
+import { getProducts, getProductImageUrl } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
-import "./style.css";
+import "../style.css";
 
 const Computers = () => {
   const [products, setProducts] = useState([]);
@@ -11,7 +11,7 @@ const Computers = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts("computers"); // Fetch only computer category
+      const data = await getProducts("computers"); // fetch computers category
       setProducts(data);
     };
     fetchProducts();
@@ -26,7 +26,7 @@ const Computers = () => {
     }
 
     addToCart(product);
-    navigate("/cart"); // Redirect to cart page after adding product
+    navigate("/cart");
   };
 
   return (
@@ -37,11 +37,11 @@ const Computers = () => {
           products.map((product) => (
             <div key={product.id} className="product-card">
               <img
-                src={`http://localhost:8080/api/products/images/${product.imagePath}`}
+                src={getProductImageUrl(product.imagePath)}
                 alt={product.name}
               />
               <h4>{product.name}</h4>
-              <p>${product.price.toFixed(2)}</p>
+              <p>₹{product.price.toFixed(2)}</p>
               <button onClick={() => handleAddToCart(product)}>
                 Add to Cart
               </button>

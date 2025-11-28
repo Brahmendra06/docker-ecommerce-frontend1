@@ -6,6 +6,6 @@ import { CartProvider } from "./context/CartContext";
 
 createRoot(document.getElementById('root')).render(
   <CartProvider>
-  <App />
+  <App/>
 </CartProvider>
 )

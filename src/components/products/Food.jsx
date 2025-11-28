@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useCart } from "../context/CartContext";
-import { getProducts } from "../services/productService";
+import { useCart } from "../../context/CartContext";
+import { getProducts, getProductImageUrl } from "../../services/productService";
 import { useNavigate } from "react-router-dom";
-import "./style.css";
+import "../style.css";
 
-const Laptops = () => {
+const Food = () => {
   const [products, setProducts] = useState([]);
   const { addToCart } = useCart();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const data = await getProducts("laptops"); // Fetch only computer category
+      const data = await getProducts("food"); // fetch food category
       setProducts(data);
     };
     fetchProducts();
@@ -19,29 +19,33 @@ const Laptops = () => {
 
   const handleAddToCart = (product) => {
     addToCart(product);
-    navigate("/cart"); // Redirect to cart page after adding product
+    navigate("/cart");
   };
-
 
   return (
     <div className="product-container">
-      <h2>Laptops</h2>
+      <h2>Food</h2>
       <div className="product-grid">
         {products.length > 0 ? (
           products.map((product) => (
             <div key={product.id} className="product-card">
-              <img src={`http://localhost:8080/api/products/images/${product.imagePath}`} alt={product.name} />
+              <img
+                src={getProductImageUrl(product.imagePath)}
+                alt={product.name}
+              />
               <h4>{product.name}</h4>
-              <p>${product.price.toFixed(2)}</p>
-              <button onClick={() => handleAddToCart(product)}>Add to Cart</button>
+              <p>₹{product.price.toFixed(2)}</p>
+              <button onClick={() => handleAddToCart(product)}>
+                Add to Cart
+              </button>
             </div>
           ))
         ) : (
-          <p>No laptops available.</p>
+          <p>No food available.</p>
         )}
       </div>
     </div>
   );
 };
 
-export default Laptops;
+export default Food;

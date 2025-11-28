@@ -1,32 +1,35 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/cart";
+// Correct base URL for Docker backend
+const CART_API_URL = "http://localhost:8081/api/cart";
 
-const API_BASE = "http://localhost:8080/api/cart";
-
-export const addToCart = async (userId, productId) => {
-  return await axios.post(`${API_BASE}/add`, {
+// Add to cart
+// You are currently calling addToCart(product.id),
+// so we make productId the first argument and default userId for now.
+export const addToCart = async (productId, userId = 1) => {
+  return await axios.post(`${CART_API_URL}/add`, {
     userId,
     productId,
-    quantity: 1
+    quantity: 1,
   });
 };
 
-export const getCartItems = async (userId) => {
-  const response = await axios.get(`${API_BASE}/user/${userId}`);
+// Get all cart items for a user
+export const getCartItems = async (userId = 1) => {
+  const response = await axios.get(`${CART_API_URL}/user/${userId}`);
   return response.data;
 };
 
-export const clearCart = async (userId) => {
-  return await axios.delete(`${API_BASE}/clear/${userId}`);
+// Clear cart for user
+export const clearCartApi = async (userId = 1) => {
+  return await axios.delete(`${CART_API_URL}/clear/${userId}`);
 };
 
-// Remove Cart Item
+// Remove a specific cart item
 export const removeCartItem = async (cartItemId) => {
-    try {
-        await axios.delete(`${API_URL}/remove/${cartItemId}`);
-    } catch (error) {
-        console.error("Error removing item from cart", error);
-    }
+  try {
+    await axios.delete(`${CART_API_URL}/remove/${cartItemId}`);
+  } catch (error) {
+    console.error("Error removing item from cart", error);
+  }
 };
-
